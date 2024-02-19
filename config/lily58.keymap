@@ -106,6 +106,30 @@ ZMK_BEHAVIOR(dot_spc, macro,
     bindings = <&kp DOT &kp SPACE &sk LSHFT>;
 )
 
+#define ZMK_MOUSE_DEFAULT_MOVE_VAL 3000
+#define ZMK_MOUSE_DEFAULT_SCRL_VAL 20
+
+&mmv {
+  acceleration-exponent = <1>;      // 1
+  time-to-max-speed-ms = <500>;    // 40
+  delay-ms = <0>;                   // 0
+};
+
+&msc {
+  acceleration-exponent = <1>;      // 0
+  time-to-max-speed-ms = <40>;      // 500
+  delay-ms = <0>;                   // 10
+};
+
+#define U_MS_U mmv MOVE_UP
+#define U_MS_D mmv MOVE_DOWN
+#define U_MS_L mmv MOVE_LEFT
+#define U_MS_R mmv MOVE_RIGHT
+#define U_WH_U msc SCRL_UP
+#define U_WH_D msc SCRL_DOWN
+#define U_WH_L msc SCRL_LEFT
+#define U_WH_R msc SCRL_RIGHT
+
 / {
     behaviors {
         // alt_repeat: alt_repeat {
@@ -177,17 +201,17 @@ ZMK_BEHAVIOR(dot_spc, macro,
 //    ┌────────────┬──────────────────────┬──────────────────────┬──────────────┬──────────────┬──────────────┐                     ┌────────────────┬──────────────────┬───────────────┬────────────┬──────────────┬─────────────────┐
 //    │ &bt BT_CLR │ &kp C_BRIGHTNESS_DEC │ &kp C_BRIGHTNESS_INC │ &bt BT_SEL 0 │ &bt BT_SEL 1 │ &bt BT_SEL 2 │                     │ &kp K_PREVIOUS │ &kp K_PLAY_PAUSE │ &kp K_FORWARD │ &kp K_MUTE │ &kp C_VOL_DN │ &kp C_VOLUME_UP │
 //    ├────────────┼──────────────────────┼──────────────────────┼──────────────┼──────────────┼──────────────┤                     ├────────────────┼──────────────────┼───────────────┼────────────┼──────────────┼─────────────────┤
-//    │   &trans   │        &trans        │        &trans        │    &trans    │    &trans    │    &trans    │                     │    &kp DOWN    │    &kp RIGHT     │    &trans     │   &trans   │    &trans    │     &trans      │
+//    │   &trans   │        &trans        │        &trans        │    &trans    │    &trans    │    &trans    │                     │    &kp DOWN    │    &kp RIGHT     │    &U_MS_U    │  &mkp MB1  │   &mkp MB2   │     &trans      │
 //    ├────────────┼──────────────────────┼──────────────────────┼──────────────┼──────────────┼──────────────┤                     ├────────────────┼──────────────────┼───────────────┼────────────┼──────────────┼─────────────────┤
-//    │   &trans   │      &kp LSHFT       │      &kp LCTRL       │   &kp LALT   │   &kp LCMD   │    &trans    │                     │    &kp LEFT    │      &trans      │    &trans     │   &trans   │    &trans    │     &trans      │
+//    │   &trans   │      &kp LSHFT       │      &kp LCTRL       │   &kp LALT   │   &kp LCMD   │    &trans    │                     │    &kp LEFT    │     &U_MS_L      │    &U_MS_D    │  &U_MS_R   │    &trans    │     &trans      │
 //    ├────────────┼──────────────────────┼──────────────────────┼──────────────┼──────────────┼──────────────┼────────┐   ┌────────┼────────────────┼──────────────────┼───────────────┼────────────┼──────────────┼─────────────────┤
 //    │   &trans   │        &trans        │        &trans        │    &trans    │    &trans    │    &trans    │ &trans │   │ &trans │     &kp UP     │      &trans      │    &trans     │   &trans   │    &trans    │     &trans      │
 //    └────────────┴──────────────────────┴──────────────────────┼──────────────┼──────────────┼──────────────┼────────┤   ├────────┼────────────────┼──────────────────┼───────────────┼────────────┴──────────────┴─────────────────┘
 //                                                               │    &trans    │    &trans    │    &trans    │ &trans │   │ &trans │     &trans     │      &trans      │    &trans     │                                              
 //                                                               └──────────────┴──────────────┴──────────────┴────────┘   └────────┴────────────────┴──────────────────┴───────────────┘                                              
   &bt BT_CLR   &kp C_BRIGHTNESS_DEC   &kp C_BRIGHTNESS_INC   &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2                         &kp K_PREVIOUS   &kp K_PLAY_PAUSE   &kp K_FORWARD   &kp K_MUTE   &kp C_VOL_DN   &kp C_VOLUME_UP
-  &trans       &trans                 &trans                 &trans         &trans         &trans                               &kp DOWN         &kp RIGHT          &trans          &trans       &trans         &trans         
-  &trans       &kp LSHFT              &kp LCTRL              &kp LALT       &kp LCMD       &trans                               &kp LEFT         &trans             &trans          &trans       &trans         &trans         
+  &trans       &trans                 &trans                 &trans         &trans         &trans                               &kp DOWN         &kp RIGHT          &U_MS_U         &mkp MB1     &mkp MB2       &trans         
+  &trans       &kp LSHFT              &kp LCTRL              &kp LALT       &kp LCMD       &trans                               &kp LEFT         &U_MS_L            &U_MS_D         &U_MS_R      &trans         &trans         
   &trans       &trans                 &trans                 &trans         &trans         &trans         &trans       &trans   &kp UP           &trans             &trans          &trans       &trans         &trans         
                                                              &trans         &trans         &trans         &trans       &trans   &trans           &trans             &trans                                                     
             >;
