@@ -82,6 +82,23 @@
 #define HOME_RR RightRing(I, COLEMAK)
 #define HOME_RP RightPinky(O, COLEMAK)
 
+ZMK_BEHAVIOR(nrm, hold_tap,
+    flavor = "balanced";
+    tapping-term-ms = <300>;
+    quick-tap-ms = <125>;
+    bindings = <&kp>, <&kp>;
+)
+
+#define HOME_LPN nrm LSFT N1
+#define HOME_LRN nrm LCTL N2
+#define HOME_LMN nrm LALT N3
+#define HOME_LIN nrm LGUI N4
+
+#define HOME_RIN nrm LSFT N7
+#define HOME_RMN nrm LCTL N8
+#define HOME_RRN nrm LALT N9
+#define HOME_RPN nrm LGUI N0
+
 /* left-hand LT */
 ZMK_BEHAVIOR(pinky_llt, hold_tap,
     flavor = PINKY_HOLDING_TYPE;
@@ -230,22 +247,22 @@ ZMK_BEHAVIOR(bs_del, mod_morph,
 
         number {
             bindings = <
-//    ┌────────┬────────┬────────┬────────┬────────┬────────┐                     ┌────────┬────────┬────────┬────────┬─────────┬────────┐
-//    │ &trans │ &kp F1 │ &kp F2 │ &kp F3 │ &kp F4 │ &kp F5 │                     │ &kp F6 │ &kp F7 │ &kp F8 │ &kp F9 │ &kp F10 │ &trans │
-//    ├────────┼────────┼────────┼────────┼────────┼────────┤                     ├────────┼────────┼────────┼────────┼─────────┼────────┤
-//    │ &trans │ &trans │ &trans │ &trans │ &trans │ &trans │                     │ &trans │ &trans │ &trans │ &trans │ &trans  │ &trans │
-//    ├────────┼────────┼────────┼────────┼────────┼────────┤                     ├────────┼────────┼────────┼────────┼─────────┼────────┤
-//    │ &trans │ &kp N1 │ &kp N2 │ &kp N3 │ &kp N4 │ &kp N5 │                     │ &kp N6 │ &kp N7 │ &kp N8 │ &kp N9 │ &kp N0  │ &trans │
-//    ├────────┼────────┼────────┼────────┼────────┼────────┼────────┐   ┌────────┼────────┼────────┼────────┼────────┼─────────┼────────┤
-//    │ &trans │ &trans │ &trans │ &trans │ &trans │ &trans │ &trans │   │ &trans │ &trans │ &trans │ &trans │ &trans │ &trans  │ &trans │
-//    └────────┴────────┴────────┼────────┼────────┼────────┼────────┤   ├────────┼────────┼────────┼────────┼────────┴─────────┴────────┘
-//                               │ &trans │ &trans │ &trans │ &trans │   │ &trans │ &trans │ &trans │ &trans │                            
-//                               └────────┴────────┴────────┴────────┘   └────────┴────────┴────────┴────────┘                            
-  &trans   &kp F1   &kp F2   &kp F3   &kp F4   &kp F5                         &kp F6   &kp F7   &kp F8   &kp F9   &kp F10   &trans
-  &trans   &trans   &trans   &trans   &trans   &trans                         &trans   &trans   &trans   &trans   &trans    &trans
-  &trans   &kp N1   &kp N2   &kp N3   &kp N4   &kp N5                         &kp N6   &kp N7   &kp N8   &kp N9   &kp N0    &trans
-  &trans   &trans   &trans   &trans   &trans   &trans   &trans       &trans   &trans   &trans   &trans   &trans   &trans    &trans
-                             &trans   &trans   &trans   &trans       &trans   &trans   &trans   &trans                            
+//    ┌────────┬───────────┬───────────┬───────────┬───────────┬────────┐                     ┌────────┬───────────┬───────────┬───────────┬───────────┬────────┐
+//    │ &trans │  &kp F1   │  &kp F2   │  &kp F3   │  &kp F4   │ &kp F5 │                     │ &kp F6 │  &kp F7   │  &kp F8   │  &kp F9   │  &kp F10  │ &trans │
+//    ├────────┼───────────┼───────────┼───────────┼───────────┼────────┤                     ├────────┼───────────┼───────────┼───────────┼───────────┼────────┤
+//    │ &trans │  &trans   │  &trans   │  &trans   │  &trans   │ &trans │                     │ &trans │  &trans   │  &trans   │  &trans   │  &trans   │ &trans │
+//    ├────────┼───────────┼───────────┼───────────┼───────────┼────────┤                     ├────────┼───────────┼───────────┼───────────┼───────────┼────────┤
+//    │ &trans │ &HOME_LPN │ &HOME_LRN │ &HOME_LMN │ &HOME_LIN │ &kp N5 │                     │ &kp N6 │ &HOME_RIN │ &HOME_RMN │ &HOME_RRN │ &HOME_RPN │ &trans │
+//    ├────────┼───────────┼───────────┼───────────┼───────────┼────────┼────────┐   ┌────────┼────────┼───────────┼───────────┼───────────┼───────────┼────────┤
+//    │ &trans │  &trans   │  &trans   │  &trans   │  &trans   │ &trans │ &trans │   │ &trans │ &trans │  &trans   │  &trans   │  &trans   │  &trans   │ &trans │
+//    └────────┴───────────┴───────────┼───────────┼───────────┼────────┼────────┤   ├────────┼────────┼───────────┼───────────┼───────────┴───────────┴────────┘
+//                                     │  &trans   │  &trans   │ &trans │ &trans │   │ &trans │ &trans │  &trans   │  &trans   │                                 
+//                                     └───────────┴───────────┴────────┴────────┘   └────────┴────────┴───────────┴───────────┘                                 
+  &trans   &kp F1      &kp F2      &kp F3      &kp F4      &kp F5                         &kp F6   &kp F7      &kp F8      &kp F9      &kp F10     &trans
+  &trans   &trans      &trans      &trans      &trans      &trans                         &trans   &trans      &trans      &trans      &trans      &trans
+  &trans   &HOME_LPN   &HOME_LRN   &HOME_LMN   &HOME_LIN   &kp N5                         &kp N6   &HOME_RIN   &HOME_RMN   &HOME_RRN   &HOME_RPN   &trans
+  &trans   &trans      &trans      &trans      &trans      &trans   &trans       &trans   &trans   &trans      &trans      &trans      &trans      &trans
+                                   &trans      &trans      &trans   &trans       &trans   &trans   &trans      &trans                                    
             >;
         };
 
