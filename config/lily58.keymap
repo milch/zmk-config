@@ -20,6 +20,16 @@
 #define SYM            3
 #define WORKSPACE_NAV  4
 
+// Helper layers for Bilateral Combinations
+#define LAYER_LeftPinky  5
+#define LAYER_LeftRing  6
+#define LAYER_LeftMiddy  7
+#define LAYER_LeftIndex  8
+#define LAYER_RightPinky 9
+#define LAYER_RightRing 10
+#define LAYER_RightMiddy 11
+#define LAYER_RightIndex 12
+
 #define KEYS_L LT5 LT4 LT3 LT2 LT1 LT0 LM5 LM4 LM3 LM2 LM1 LM0 LB5 LB4 LB3 LB2 LB1 LB0 LF5 LF4 LF3 LF2 LF1 LF0
 #define KEYS_R RT0 RT1 RT2 RT3 RT4 RT5 RM0 RM1 RM2 RM3 RM4 RM5 RB0 RB1 RB2 RB3 RB4 RB5 RF0 RF1 RF2 RF3 RF4 RF5
 #define THUMBS LH3 LH2 LH1 LH0 RH0 RH1 RH2 RH3
@@ -35,15 +45,6 @@
 #define HYPER_8 LG(LC(LA(N8)))
 #define HYPER_9 LG(LC(LA(N9)))
 
-#define QUICK_TAP_MS 175
-
-// reuse basic mod-morph scheme
-#define SIMPLE_MORPH(NAME, MOD, BINDING1, BINDING2) \
-    ZMK_BEHAVIOR(NAME, mod_morph, \
-        mods = <(MOD_L ## MOD|MOD_R ## MOD)>; \
-        bindings = <BINDING1>, <BINDING2>; \
-    )
-
 &caps_word {
      /delete-property/ ignore-modifiers;
     // continue-list = <UNDERSCORE  BACKSPACE DELETE LSHFT RSHFT>;
@@ -57,24 +58,45 @@
 
 #define IDLE_MS 95
 
-/* left-hand HRMs */
-ZMK_BEHAVIOR(hml, hold_tap,
-    flavor = "balanced";
-    tapping-term-ms = <280>;
-    quick-tap-ms = <175>;                // repeat on tap-into-hold
-    require-prior-idle-ms = <IDLE_MS>;
-    bindings = <&kp>, <&kp>;
+// Customization options for Bilateral Combinations
+#define DIFFICULTY_LEVEL  4
+
+#define PINKY_HOLDING_TIME 200
+#define PINKY_HOLDING_TYPE "balanced"
+#define PINKY_STREAK_DECAY IDLE_MS
+#define HOMEY_HOLDING_TYPE "balanced"
+
+#define ENFORCE_BILATERAL   // cancels single-handed home row mod+tap
+#include "./bilateral_combinations.dts"
+
+#define HOME_LP LeftPinky(A, COLEMAK)
+#define HOME_LR LeftRing(R, COLEMAK)
+#define HOME_LM LeftMiddy(S, COLEMAK)
+#define HOME_LI LeftIndex(T, COLEMAK)
+
+#define HOME_RI RightIndex(N, COLEMAK)
+#define HOME_RM RightMiddy(E, COLEMAK)
+#define HOME_RR RightRing(I, COLEMAK)
+#define HOME_RP RightPinky(O, COLEMAK)
+
+/* left-hand LT */
+ZMK_BEHAVIOR(pinky_llt, hold_tap,
+    flavor = PINKY_HOLDING_TYPE;
+    tapping-term-ms = <PINKY_HOLDING_TIME>;
+    quick-tap-ms = <PINKY_REPEAT_DECAY>;
+    require-prior-idle-ms = <PINKY_STREAK_DECAY>;
+    bindings = <&mo>, <&kp>;
     hold-trigger-key-positions = <KEYS_R THUMBS>;
     hold-trigger-on-release;             // delay positional check until key-release
 )
 
-/* right-hand HRMs */
-ZMK_BEHAVIOR(hmr, hold_tap,
-    flavor = "balanced";
-    tapping-term-ms = <280>;
-    quick-tap-ms = <175>;                // repeat on tap-into-hold
-    require-prior-idle-ms = <IDLE_MS>;
-    bindings = <&kp>, <&kp>;
+/* right-hand LT */
+ZMK_BEHAVIOR(pinky_rlt, hold_tap,
+    flavor = PINKY_HOLDING_TYPE;
+    tapping-term-ms = <PINKY_HOLDING_TIME>;
+    quick-tap-ms = <PINKY_REPEAT_DECAY>;
+    require-prior-idle-ms = <PINKY_STREAK_DECAY>;
+    bindings = <&mo>, <&kp>;
     hold-trigger-key-positions = <KEYS_L THUMBS>;
     hold-trigger-on-release;             // delay positional check until key-release
 )
@@ -90,20 +112,6 @@ ZMK_BEHAVIOR(bs_del, mod_morph,
     bindings = <&kp BSPC>, <&kp DEL>;
     mods = <(MOD_LSFT|MOD_RSFT)>;
     keep-mods = <MOD_RSFT>;
-)
-
-// tap: space | shift + tap: dot -> space -> sticky shift | hold: activate layer
-ZMK_BEHAVIOR(lt_spc, hold_tap,
-    flavor = "balanced";
-    tapping-term-ms = <200>;
-    quick-tap-ms = <QUICK_TAP_MS>;
-    bindings = <&mo>, <&spc_morph>;
-)
-SIMPLE_MORPH(spc_morph, SFT, &kp SPACE, &dot_spc)
-ZMK_BEHAVIOR(dot_spc, macro,
-    wait-ms = <0>;
-    tap-ms = <5>;
-    bindings = <&kp DOT &kp SPACE &sk LSHFT>;
 )
 
 #define ZMK_MOUSE_DEFAULT_MOVE_VAL 3000
@@ -177,22 +185,22 @@ ZMK_BEHAVIOR(dot_spc, macro,
 
         colemak {
             bindings = <
-//    ┌────────────┬──────────────┬──────────────┬─────────────┬───────────────────┬─────────────────┐                                 ┌─────────┬─────────────┬──────────────┬──────────────┬──────────────┬───────────┐
-//    │ &kp GRAVE  │    &kp N1    │    &kp N2    │   &kp N3    │      &kp N4       │     &kp N5      │                                 │ &kp N6  │   &kp N7    │    &kp N8    │    &kp N9    │    &kp N0    │ &kp EQUAL │
-//    ├────────────┼──────────────┼──────────────┼─────────────┼───────────────────┼─────────────────┤                                 ├─────────┼─────────────┼──────────────┼──────────────┼──────────────┼───────────┤
-//    │  &kp TAB   │    &kp Q     │    &kp W     │    &kp F    │       &kp P       │      &kp G      │                                 │  &kp J  │    &kp L    │    &kp U     │    &kp Y     │   &kp SEMI   │ &kp MINUS │
-//    ├────────────┼──────────────┼──────────────┼─────────────┼───────────────────┼─────────────────┤                                 ├─────────┼─────────────┼──────────────┼──────────────┼──────────────┼───────────┤
-//    │  &kp ESC   │ &hml LSHFT A │ &hml LCTRL R │ &hml LALT S │    &hml LGUI T    │      &kp D      │                                 │  &kp H  │ &hmr RGUI N │ &hmr LALT E  │ &hmr RCTRL I │ &hmr RSHFT O │  &kp SQT  │
-//    ├────────────┼──────────────┼──────────────┼─────────────┼───────────────────┼─────────────────┼───────────────┐   ┌─────────────┼─────────┼─────────────┼──────────────┼──────────────┼──────────────┼───────────┤
-//    │ &caps_word │  &lt NUM Z   │    &kp X     │    &kp C    │       &kp V       │      &kp B      │   &kp LBKT    │   │  &kp RBKT   │  &kp K  │    &kp M    │  &kp COMMA   │   &kp DOT    │ &lt NUM FSLH │ &num_word │
-//    └────────────┴──────────────┴──────────────┼─────────────┼───────────────────┼─────────────────┼───────────────┤   ├─────────────┼─────────┼─────────────┼──────────────┼──────────────┴──────────────┴───────────┘
-//                                               │ &key_repeat │ &mo WORKSPACE_NAV │ &mo_rep SYM SYM │ &lt NAV SPACE │   │ &lt NAV RET │ &mo SYM │   &bs_del   │ &kp C_REPEAT │                                          
-//                                               └─────────────┴───────────────────┴─────────────────┴───────────────┘   └─────────────┴─────────┴─────────────┴──────────────┘                                          
-  &kp GRAVE    &kp N1         &kp N2         &kp N3        &kp N4              &kp N5                                              &kp N6    &kp N7        &kp N8         &kp N9         &kp N0         &kp EQUAL
-  &kp TAB      &kp Q          &kp W          &kp F         &kp P               &kp G                                               &kp J     &kp L         &kp U          &kp Y          &kp SEMI       &kp MINUS
-  &kp ESC      &hml LSHFT A   &hml LCTRL R   &hml LALT S   &hml LGUI T         &kp D                                               &kp H     &hmr RGUI N   &hmr LALT E    &hmr RCTRL I   &hmr RSHFT O   &kp SQT  
-  &caps_word   &lt NUM Z      &kp X          &kp C         &kp V               &kp B             &kp LBKT            &kp RBKT      &kp K     &kp M         &kp COMMA      &kp DOT        &lt NUM FSLH   &num_word
-                                             &key_repeat   &mo WORKSPACE_NAV   &mo_rep SYM SYM   &lt NAV SPACE       &lt NAV RET   &mo SYM   &bs_del       &kp C_REPEAT                                          
+//    ┌────────────┬──────────────────┬──────────┬─────────────┬───────────────────┬─────────────────┐                                 ┌─────────┬──────────┬──────────────┬──────────┬─────────────────────┬───────────┐
+//    │ &kp GRAVE  │      &kp N1      │  &kp N2  │   &kp N3    │      &kp N4       │     &kp N5      │                                 │ &kp N6  │  &kp N7  │    &kp N8    │  &kp N9  │       &kp N0        │ &kp EQUAL │
+//    ├────────────┼──────────────────┼──────────┼─────────────┼───────────────────┼─────────────────┤                                 ├─────────┼──────────┼──────────────┼──────────┼─────────────────────┼───────────┤
+//    │  &kp TAB   │      &kp Q       │  &kp W   │    &kp F    │       &kp P       │      &kp G      │                                 │  &kp J  │  &kp L   │    &kp U     │  &kp Y   │      &kp SEMI       │ &kp MINUS │
+//    ├────────────┼──────────────────┼──────────┼─────────────┼───────────────────┼─────────────────┤                                 ├─────────┼──────────┼──────────────┼──────────┼─────────────────────┼───────────┤
+//    │  &kp ESC   │     &HOME_LP     │ &HOME_LR │  &HOME_LM   │     &HOME_LI      │      &kp D      │                                 │  &kp H  │ &HOME_RI │   &HOME_RM   │ &HOME_RR │      &HOME_RP       │  &kp SQT  │
+//    ├────────────┼──────────────────┼──────────┼─────────────┼───────────────────┼─────────────────┼───────────────┐   ┌─────────────┼─────────┼──────────┼──────────────┼──────────┼─────────────────────┼───────────┤
+//    │ &caps_word │ &pinky_llt NUM Z │  &kp X   │    &kp C    │       &kp V       │      &kp B      │   &kp LBKT    │   │  &kp RBKT   │  &kp K  │  &kp M   │  &kp COMMA   │ &kp DOT  │ &pinky_rlt NUM FSLH │ &num_word │
+//    └────────────┴──────────────────┴──────────┼─────────────┼───────────────────┼─────────────────┼───────────────┤   ├─────────────┼─────────┼──────────┼──────────────┼──────────┴─────────────────────┴───────────┘
+//                                               │ &key_repeat │ &mo WORKSPACE_NAV │ &mo_rep SYM SYM │ &lt NAV SPACE │   │ &lt NAV RET │ &mo SYM │ &bs_del  │ &kp C_REPEAT │                                             
+//                                               └─────────────┴───────────────────┴─────────────────┴───────────────┘   └─────────────┴─────────┴──────────┴──────────────┘                                             
+  &kp GRAVE    &kp N1             &kp N2     &kp N3        &kp N4              &kp N5                                              &kp N6    &kp N7     &kp N8         &kp N9     &kp N0                &kp EQUAL
+  &kp TAB      &kp Q              &kp W      &kp F         &kp P               &kp G                                               &kp J     &kp L      &kp U          &kp Y      &kp SEMI              &kp MINUS
+  &kp ESC      &HOME_LP           &HOME_LR   &HOME_LM      &HOME_LI            &kp D                                               &kp H     &HOME_RI   &HOME_RM       &HOME_RR   &HOME_RP              &kp SQT  
+  &caps_word   &pinky_llt NUM Z   &kp X      &kp C         &kp V               &kp B             &kp LBKT            &kp RBKT      &kp K     &kp M      &kp COMMA      &kp DOT    &pinky_rlt NUM FSLH   &num_word
+                                             &key_repeat   &mo WORKSPACE_NAV   &mo_rep SYM SYM   &lt NAV SPACE       &lt NAV RET   &mo SYM   &bs_del    &kp C_REPEAT                                             
             >;
         };
 
@@ -279,6 +287,16 @@ ZMK_BEHAVIOR(dot_spc, macro,
                                                &trans            &trans            &trans            &trans       &trans   &trans            &trans            &trans                                                      
             >;
         };
+
+        BILATERAL_LAYER_LEFT(left_pinky_tap);
+        BILATERAL_LAYER_LEFT(left_ring_tap);
+        BILATERAL_LAYER_LEFT(left_middy_tap);
+        BILATERAL_LAYER_LEFT(left_index_tap);
+
+        BILATERAL_LAYER_RIGHT(right_pinky_tap);
+        BILATERAL_LAYER_RIGHT(right_ring_tap);
+        BILATERAL_LAYER_RIGHT(right_middy_tap);
+        BILATERAL_LAYER_RIGHT(right_index_tap);
     };
 };
 

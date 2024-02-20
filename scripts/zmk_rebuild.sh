@@ -183,6 +183,7 @@ compile_shield() {
     echo
     cat "$LOGFILE"
     echo "$(tput setaf 1)Error: $1 failed$(tput sgr0)"
+    exit 1
   fi
 }
 
