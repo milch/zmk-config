@@ -2034,7 +2034,7 @@ ZMK_BEHAVIOR(right_middy_index_bilateral, hold_tap,
   &finger LH_C6R1    &finger LH_C5R1   &finger LH_C4R1   &finger LH_C3R1   &finger LH_C2R1   &finger LH_C1R1                         &trans   &trans   &trans   &trans   &trans   &trans \
   &trans             &finger LH_C5R2   &finger LH_C4R2   &finger LH_C3R2   &finger LH_C2R2   &finger LH_C1R2                         &trans   &trans   &trans   &trans   &trans   &trans \
   &trans             HOME_ROW(finger)                                                                                                                                             &trans \
-  &trans             &pinky_llt NUM LH_C5R4   &finger LH_C4R4   &finger LH_C3R4   &finger LH_C2R4   &finger LH_C1R4                         &trans   &trans   &trans   &trans   &trans   &trans \
+  &trans             &mo LAYER_LHN     &finger LH_C4R4   &finger LH_C3R4   &finger LH_C2R4   &finger LH_C1R4                         &trans   &trans   &trans   &trans   &trans   &trans \
                              &trans   &trans   &trans   &trans                &trans   &trans   &trans   &trans                             \
             >; \
         }
@@ -2042,10 +2042,10 @@ ZMK_BEHAVIOR(right_middy_index_bilateral, hold_tap,
 #define BILATERAL_LAYER_RIGHT(finger) \
         layer_ ## finger { \
             bindings = < \
-  &trans   &trans   &trans   &trans   &trans   &trans                         &finger RH_C1R1    &finger RH_C2R1   &finger RH_C3R1   &finger RH_C4R1   &finger RH_C5R1   &finger RH_C6R1 \
-  &trans   &trans   &trans   &trans   &trans   &trans                         &trans             &finger RH_C2R2   &finger RH_C3R2   &finger RH_C4R2   &finger RH_C5R2   &finger RH_C6R2 \
-  &trans                                                                                         HOME_ROW(finger)                                                        &trans          \
-  &trans   &trans   &trans   &trans   &trans   &trans   &trans       &trans   &trans             &finger RH_C2R4   &finger RH_C3R4   &finger RH_C4R4   &finger RH_C5R4   &pinky_rlt NUM RH_C6R4 \
-                             &trans   &trans   &trans   &trans       &trans   &trans   &trans   &trans                             \
+&trans   &trans   &trans   &trans   &trans   &trans                         &finger RH_C1R1    &finger RH_C2R1   &finger RH_C3R1   &finger RH_C4R1   &finger RH_C5R1   &finger RH_C6R1 \
+&trans   &trans   &trans   &trans   &trans   &trans                         &trans             &finger RH_C2R2   &finger RH_C3R2   &finger RH_C4R2   &finger RH_C5R2   &finger RH_C6R2 \
+&trans                                                                                         HOME_ROW(finger)                                                        &trans          \
+&trans   &trans   &trans   &trans   &trans   &trans   &trans       &trans   &trans             &finger RH_C2R4   &finger RH_C3R4   &finger RH_C4R4   &mo LAYER_RHN   &finger RH_C6R4 \
+                           &trans   &trans   &trans   &trans       &trans   &trans   &trans   &trans                             \
             >; \
         }
