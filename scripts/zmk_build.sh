@@ -78,7 +78,7 @@ done
 [[ -z $OUTPUT_DIR ]] && OUTPUT_DIR="$HOME/Downloads"
 [[ -z $LOG_DIR ]] && LOG_DIR="/tmp"
 
-[[ -z $HOST_ZMK_DIR ]] && HOST_ZMK_DIR="$HOME/Developer/zmk-urob"
+[[ -z $HOST_ZMK_DIR ]] && HOST_ZMK_DIR="$HOME/Developer/zmk"
 [[ -z $HOST_CONFIG_DIR ]] && HOST_CONFIG_DIR="$HOME/Developer/zmk-config"
 
 [[ -z $DOCKER_ZMK_DIR ]] && DOCKER_ZMK_DIR="/workspace/zmk"
